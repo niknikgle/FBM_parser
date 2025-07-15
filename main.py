@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-url = "https://www.facebook.com/marketplace/112372102112762/search/?query=xbox"
+url = "https://www.facebook.com/marketplace/GEO_ID/search/?query=QUERY"
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0",
