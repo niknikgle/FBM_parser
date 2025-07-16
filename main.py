@@ -30,6 +30,7 @@ soup = BeautifulSoup(response.text, "html.parser")
 script_tags = soup.find_all("script", {"type": "application/json", "data-sjs": True})
 
 all_listings = []
+formatted_listings = []
 
 
 def extract_from_edges_nodes(data):
@@ -58,9 +59,6 @@ for tag in script_tags:
 
 all_listings = [listing for listing in all_listings if listing]
 
-
-formatted_listings = []
-
 for listing_data in all_listings:
     listing = listing_data.get("listing", {})
     listing_name = listing.get("marketplace_listing_title")
@@ -70,15 +68,22 @@ for listing_data in all_listings:
     )
     id = listing.get("id")
     location = listing.get("location", {}).get("reverse_geocode", {}).get("city")
-
+    city = listing.get("location", {}).get("reverse_geocode", {}).get("city_page", {})
     formatted_listings.append(
         {
             "name": listing_name,
             "price": price,
             "listing_picture": listing_picture,
             "id": id,
-            "location": location,
+            "location": f"{location}{', ' + city.get('display_name') if city is not None else ''}",
         }
     )
 
-print(len(formatted_listings))
+
+for listing in formatted_listings:
+
+    print(listing["name"])
+    print(listing["price"])
+    print(listing["location"])
+    print(f"https://www.facebook.com/marketplace/item/{listing['id']}")
+    print("-" * 8)
